@@ -31,7 +31,6 @@ function start() {
 
 // gets recommendations
 function getRecommendations(url) {
-    console.log(url)
     fetch(url)
         .then(res => res.json())
         .then(data => data.businesses)
