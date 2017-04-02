@@ -6,5 +6,10 @@ Created with Node.js, Bootstrap, HTML, and Yelp Fusion API.
 
 Hosted with Heroku at: https://yelp-recommendations.herokuapp.com/
 
+To run locally, use
+```
+node app.js
+```
+
 Submission for Capital One Summit 2017 Challenge
 
