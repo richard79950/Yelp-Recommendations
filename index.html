@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<script>
+
+//Geolocation
+var x = {}
+
+function showPosition(position) {
+    x.latitude = position.coords.latitude
+    x.longitude = position.coords.longitude
+}
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+getLocation()
+
+// inits the call
+function start() {
+    getRecommendations("/api/search?" + 
+        "latitude=" + x.latitude + 
+        "&longitude=" + x.longitude + 
+        "&term=" + userInput.value
+        )
+}
+
+// gets recommendations
+function getRecommendations(url) {
+    console.log(url)
+    fetch(url)
+        .then(res => res.json())
+        .then(data => data.businesses)
+        .then(businesses => businesses.map(business => {
+            return {
+                name: business.name,                            //0
+                phone: business.display_phone,                  //1
+                address1: business.location.address1,           //2
+                city: business.location.city,                   //3
+                state: business.location.state,                 //4
+                zip_code: business.location.zip_code,           //5
+                rating: business.rating,                        //6
+                price: business.price,                          //7
+                url: business.url                               //8
+            }
+        }))
+        .then(data => {
+            results(data)
+        })
+}   
+
+// returns the recommendations
+function results(data) {
+    recommendations.innerHTML = ""
+
+    for (var i = 0; i < data.length; i++) {
+        
+        var div = document.createElement("div");
+        var div2 = document.createElement("div");
+        var div3 = document.createElement("div");
+        var div4 = document.createElement("div");
+
+        var name = document.createElement("h3");
+        var phone = document.createElement("p");
+        var address = document.createElement("p");
+        var rating = document.createElement("p");
+        var price = document.createElement("p");
+        var url = document.createElement("a");
+
+        var parsedData = JSON.parse(JSON.stringify(data[i]));
+
+        div.className = "col-md-4";
+        name.innerHTML = parsedData[Object.keys(parsedData)[0]];
+        name.className = "panel-title";
+        phone.innerHTML = "Phone: " + parsedData[Object.keys(parsedData)[1]]
+        address.innerHTML = "Address: " + parsedData[Object.keys(parsedData)[2]] + 
+                            ", " + parsedData[Object.keys(parsedData)[3]] + 
+                            ", " + parsedData[Object.keys(parsedData)[4]] + 
+                            " " + parsedData[Object.keys(parsedData)[5]];
+        rating.innerHTML = "Rating: " + parsedData[Object.keys(parsedData)[6]];
+        price.innerHTML = "Price: " + parsedData[Object.keys(parsedData)[7]];
+        url.innerHTML = "Yelp Page Url";
+        url.href = parsedData[Object.keys(parsedData)[8]];
+
+        div2.className = "panel panel-default";
+        div3.className = "panel-heading";
+        div4.className = "panel-body";
+
+        div3.appendChild(name);
+        div4.appendChild(phone);
+        div4.appendChild(address);
+        div4.appendChild(price);
+        div4.appendChild(rating);
+        div4.appendChild(url);
+
+        div2.appendChild(div3);
+        div2.appendChild(div4);
+        div.appendChild(div2);
+
+        recommendations.appendChild(div);
+        
+    }
+}
+</script>
+<head>
+    <meta charset = "utf-8" />
+    <title>Recommendations</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1>Yelp Food Recommendations</h1>
+        <h2>Looking for something to eat? Just put in the kind of cuisine you want to eat and press "Find"</h2>
+            <label for="userInput">What kind of food would you like to eat?</label>
+            <input id = "userInput" placeholder="American, Chinese, French, Mexican, etc..." style="width: 400px"></input>
+            <button type="submit" class="btn btn-default" onclick = "start()">Find</button>
+
+    </div>
+
+    <div id="recommendations" class="row"></div>
+</div>
+
+</body>
+</html>

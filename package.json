@@ -1,0 +1,21 @@
+{
+  "name": "yelp-recommender",
+  "version": "1.0.0",
+  "description": "Recommends Yelp Resturants based on user inputs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richard79950/Yelp-Recommendations.git"
+  },
+  "author": "Richard Chen <richard79950@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "request": "^2.81.0"
+  }
+}
