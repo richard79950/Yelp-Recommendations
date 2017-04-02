@@ -14,10 +14,13 @@ app.get("/", function(req, res) {
 	res.sendfile("index.html")
 })
 
+// port
 var port = process.env.PORT || 8080
 
+// static
 app.use(express.static(__dirname + "/js"));
 
+// listen
 app.listen(port, function() {
 	console.log("App running at localhost:" + port)
 })

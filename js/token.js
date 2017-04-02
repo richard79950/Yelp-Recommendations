@@ -2,6 +2,7 @@ var request = require("request")
 
 var access_token;
 
+// gets token
 exports.get_token = function(app) {
     var token_gen = {
         method: 'POST',
@@ -23,12 +24,11 @@ exports.get_token = function(app) {
     })    
 }
 
+// searches for restaurants
 exports.searchRestaurants = function(req, res) {
     var restaurants = {
         method: 'GET',
-        url: 'https://api.yelp.com/v3/businesses/search?term=' + req.query.term + 
-             '&latitude=' + req.query.latitude + 
-             '&longitude=' + req.query.longitude,
+        url: 'https://api.yelp.com/v3/businesses/search?term=' + req.query.term + '&latitude=' + req.query.latitude + '&longitude=' + req.query.longitude,
         headers:  {
              authorization: 'Bearer ' + access_token
          }
